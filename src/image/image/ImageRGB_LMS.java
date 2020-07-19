@@ -4,6 +4,8 @@ import java.awt.*;
 import java.awt.image.BufferedImage;
 
 public class ImageRGB_LMS {
+
+
     public static Color getRGB (BufferedImage image){
         int w = image.getWidth();
         int h = image.getHeight();

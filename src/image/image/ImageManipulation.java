@@ -20,7 +20,7 @@ public class ImageManipulation {
         /*Metodos static que retorna uma imagem dado um caminho*/
         /*TO DO: Alterar para receber imagem como parametro*/
         try {
-            img = ImageIO.read(new File("C:\\Users\\horte\\OneDrive\\Imagens\\olhandopcima.jpg"));
+            img = ImageIO.read(new File("C:\\Users\\horte\\IdeaProjects\\Processamento_Daltonismo\\src\\image\\image\\lena_test.png"));
             /*Tenta ler a imagem, se conseguir, retorna */
             return img;
         } catch (IOException e) {
@@ -30,24 +30,28 @@ public class ImageManipulation {
         return null;
         }
 
-    public static void main(String[] args) {
-        /*Cria jFrame */
-        frame = new JFrame("Imagem");
+        public static void exibeImagem(BufferedImage imagem){
+        if(imagem == null) {
+            System.out.println("A imagem é nula. Verifique o parâmetro e tente novamente.");
+        }
+            /*Cria jFrame */
+            frame = new JFrame("Imagem");
 
-        frame.addWindowListener(new WindowAdapter(){
-            public void windowClosing(WindowEvent e) {
-                System.exit(0);
-            }
-        });
+            frame.addWindowListener(new WindowAdapter(){
+                public void windowClosing(WindowEvent e) {
+                    System.exit(0);
+                }
+            });
 
-        /*Cria o jLabel para exibir a imagem de entrada */
-        /*TO DO: redimensionar o jLabel para ficar menor e centralizado */
-        JLabel picLabel = new JLabel(new ImageIcon(LeImagem()));
+            /*Cria o jLabel para exibir a imagem de entrada */
+            /*TO DO: redimensionar o jLabel para ficar menor e centralizado */
+            JLabel picLabel = new JLabel(new ImageIcon(imagem));
 
-        Color color = ImageRGB_LMS.getRGB(LeImagem());
+            Color color = ImageRGB_LMS.getRGB(imagem);
 
-        frame.add(picLabel);
-        frame.pack();
-        frame.setVisible(true);
-    }
+            frame.add(picLabel);
+            frame.pack();
+            frame.setVisible(true);
+        }
+
 }
