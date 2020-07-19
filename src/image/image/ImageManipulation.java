@@ -31,12 +31,12 @@ public class ImageManipulation {
         return null;
         }
 
-        public static void exibeImagem(BufferedImage imagem){
-        if(imagem == null) {
+        public static void exibeImagem(BufferedImage imagemOriginal, BufferedImage imagemResultado, String tipoDaltonismo){
+        if(imagemOriginal == null || imagemResultado == null) {
             System.out.println("A imagem é nula. Verifique o parâmetro e tente novamente.");
         }
             /*Cria jFrame */
-            frame = new JFrame("Imagem");
+            frame = new JFrame(tipoDaltonismo);
 
             frame.addWindowListener(new WindowAdapter(){
                 public void windowClosing(WindowEvent e) {
@@ -46,11 +46,18 @@ public class ImageManipulation {
 
             /*Cria o jLabel para exibir a imagem de entrada */
             /*TO DO: redimensionar o jLabel para ficar menor e centralizado */
-            JLabel picLabel = new JLabel(new ImageIcon(imagem));
 
-            Color color = ImageRGB_LMS.getRGB(imagem);
+            JLabel picLabel1 = new JLabel(new ImageIcon(imagemOriginal));
+            JLabel picLabel2 = new JLabel(new ImageIcon(imagemResultado));
 
-            frame.add(picLabel);
+            //frame.add(picLabel1);
+            //frame.add(picLabel2);
+            JTabbedPane tabbed = new JTabbedPane();
+            frame.setContentPane(tabbed);
+
+            tabbed.addTab("Original", picLabel1);
+            tabbed.addTab("Resultado", picLabel2);
+
             frame.pack();
             frame.setVisible(true);
         }

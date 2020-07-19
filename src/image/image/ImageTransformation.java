@@ -1,34 +1,86 @@
 package image;
 
+import java.awt.*;
+import java.awt.image.BufferedImage;
+
 public class ImageTransformation {
-    /* Tipos de daltonismo */
 
-    /* Pronatopia */
-    private static double[][] matrizProtanopia = new double[][] {
-            {0.0, 2.02344, -2.52581},
-            {0.0, 1.0, 0.0},
-            {0.0, 0.0, 1.0}
-    };
+    static BufferedImage imgSaida = null;
+    static Daltonism pronatopia, deuteranopia, tritanopia;
 
-    /* Deuteranopia */
-    private static double[][] matrizDeuteranopia = new double[][] {
-            {1.0, 0.0, 0.0},
-            {0.494207, 0.0, 1.24827},
-            {0.0, 0.0, 1.0}
-    };
+    public static BufferedImage imagemDaltonica(BufferedImage imgOriginal, String tipo){
+        Color c;
+        int r, g, b;
+        int red, green, blue;
 
-    /* Tritanopia */
-    private static double[][] matrizTritanopia = new double[][] {
-            {1.0, 0.0, 0.0},
-            {0.0, 1.0, 0.0},
-            {-0.395913, 0.801109, 0.0}
-    };
+        try {
+
+            int width = imgOriginal.getWidth();
+            int height = imgOriginal.getHeight();
+
+            /* criamos a imagem de saida de acordo com as especificacoes da entrada */
+            imgSaida = new BufferedImage(width,height,BufferedImage.TYPE_INT_RGB);
+            System.out.println("Width "+imgSaida.getWidth());
+            System.out.println("Height "+imgSaida.getHeight());
+
+            for(int i = 0; i < height ; i++) {
+                for(int j = 0; j < width; j++) {
+                    /* Pega RGB do pixel */
+                    c = new Color(imgOriginal.getRGB(j, i));
+                    r = c.getRed();
+                    g = c.getGreen();
+                    b = c.getBlue();
+
+                    /*Converte RGB para LMS */
+                    double[] lms = ImageRGB_LMS.pixelRGBParaLMS(r, g, b);
+
+                    double[] pixelDaltonico;
+
+                    /*Transforma tipo daltonismo */
+                    if(tipo.equals("pronatopia")){
+                        pixelDaltonico = TransformacaoEspectroDaltonico(lms, Daltonism.Pronatopia());
+                        System.out.println("Pixel : "+pixelDaltonico[0] +", "+pixelDaltonico[1]+", "+pixelDaltonico[2]);
+                    }
+                    else if(tipo.equals("deuteranopia")){
+                        pixelDaltonico = TransformacaoEspectroDaltonico(lms, Daltonism.Deuteranopia());
+                    }
+                    else if (tipo.equals("tritanopia")){
+                        pixelDaltonico = TransformacaoEspectroDaltonico(lms, Daltonism.Tritanopia());
+                    }
+                    else{
+                        System.out.println("Tipo inválido!");
+                        break;
+                    }
+
+                    /*Converte o pixel para RGB */
+                    double[] rgb = ImageRGB_LMS.pixelLMSParaRGB(pixelDaltonico[0],pixelDaltonico[1],pixelDaltonico[2]);
+
+                    red = (int) Math.floor(rgb[0]);
+                    green = (int) Math.floor(rgb[1]);
+                    blue = (int) Math.floor(rgb[2]);
+
+                        System.out.println(" x: "+ i + " y: "+j+ " RGB: "+red+", "+green+", "+blue);
+
+                    Color rgbC = new Color(red, green, blue);
+
+                    imgSaida.setRGB(j, i, rgbC.getRGB());
+                }
+            }
+
+        } catch (Exception e) {
+            System.out.println("Algo deu errado");
+        }
+        return imgSaida;
+    }
 
     public static double[] TransformacaoEspectroDaltonico (double[] lms, double[][] tipoDaltonismo){
+        double L = lms[0];
+        double M = lms[1];
+        double S = lms[2];
 
-        double l = (tipoDaltonismo[0][0] * lms[0]) + (tipoDaltonismo[0][1] * lms[1]) + (tipoDaltonismo[0][2] * lms[2]);
-        double m = (tipoDaltonismo[1][0] * lms[0]) + (tipoDaltonismo[1][1] * lms[1]) + (tipoDaltonismo[1][2] * lms[2]);
-        double s =(tipoDaltonismo[2][0] * lms[0]) + (tipoDaltonismo[2][1] * lms[1]) + (tipoDaltonismo[2][2] * lms[2]);
+        double l = (tipoDaltonismo[0][0] * L) + (tipoDaltonismo[0][1] * M) + (tipoDaltonismo[0][2] * S);
+        double m = (tipoDaltonismo[1][0] * L) + (tipoDaltonismo[1][1] * M) + (tipoDaltonismo[1][2] * S);
+        double s =(tipoDaltonismo[2][0] * L) + (tipoDaltonismo[2][1] * M) + (tipoDaltonismo[2][2] * S);
 
         return new double[] { l, m, s };
     }
@@ -42,6 +94,7 @@ public class ImageTransformation {
         return new double[] { R, G, B };
     }
 
+
     public static double[] MatrizErro (double[] daltonicoRGB, double[] originalRGB ){
        /*  R = r -R;
         G = g -G;
@@ -54,6 +107,6 @@ public class ImageTransformation {
         return new double[] { R, G, B};
     }
 
-    //public static double[] CorFinal ()
+
 
 }
