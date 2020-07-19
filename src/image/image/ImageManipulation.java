@@ -1,3 +1,5 @@
+package image;
+
 import java.awt.*;
 import java.awt.event.*;
 import java.awt.image.*;
@@ -5,7 +7,10 @@ import java.io.*;
 import javax.imageio.*;
 import javax.swing.*;
 
-public class ImageReader {
+/* Nesta classe, lemos uma entrada de imagem
+ */
+
+public class ImageManipulation {
     /*Cria o buffer de leitura da imagem*/
     static BufferedImage img = null;
     /*Cria o jFrame para exibir a imagem*/
@@ -38,6 +43,9 @@ public class ImageReader {
         /*Cria o jLabel para exibir a imagem de entrada */
         /*TO DO: redimensionar o jLabel para ficar menor e centralizado */
         JLabel picLabel = new JLabel(new ImageIcon(LeImagem()));
+
+        Color color = ImageRGB_LMS.getRGB(LeImagem());
+
         frame.add(picLabel);
         frame.pack();
         frame.setVisible(true);
