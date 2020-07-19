@@ -4,6 +4,7 @@ import java.awt.*;
 import java.awt.event.*;
 import java.awt.image.*;
 import java.io.*;
+import java.net.URL;
 import javax.imageio.*;
 import javax.swing.*;
 
@@ -16,11 +17,11 @@ public class ImageManipulation {
     /*Cria o jFrame para exibir a imagem*/
     static JFrame frame = null;
 
-    public static BufferedImage LeImagem(){
+    public static BufferedImage leImagem(URL url){
         /*Metodos static que retorna uma imagem dado um caminho*/
         /*TO DO: Alterar para receber imagem como parametro*/
         try {
-            img = ImageIO.read(new File("C:\\Users\\horte\\IdeaProjects\\Processamento_Daltonismo\\src\\image\\image\\lena_test.png"));
+            img = ImageIO.read(url);
             /*Tenta ler a imagem, se conseguir, retorna */
             return img;
         } catch (IOException e) {
