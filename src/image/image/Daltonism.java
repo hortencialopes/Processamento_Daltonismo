@@ -31,6 +31,5 @@ public class Daltonism {
                 {-0.395913, 0.801109, 0.0}
         };
         return matrizTritanopia;
-
     }
 }

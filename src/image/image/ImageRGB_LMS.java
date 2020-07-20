@@ -32,7 +32,7 @@ public class ImageRGB_LMS {
         double R = ((0.080944 * l) + (-0.130504 * m) + (0.116721 * s));
         double G = ((-0.0102485 * l) + (0.0540194 * m) + (-0.113615 * s));
         double B = ((-0.000365294 * l) + (-0.00412163 * m) + (0.6935113 * s));
-        System.out.println((float)R+ " / "+ (float)G + " / "+ (float)B+ " / ");
+        //System.out.println((float)R+ " / "+ (float)G + " / "+ (float)B+ " / ");
         return new double[] { R, G, B };
     }
 
